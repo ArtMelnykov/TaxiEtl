@@ -2,12 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 using TaxiDataETL.Core.Interfaces;
 using TaxiDataETL.Core.Services;
 
-public static class IServiceCollectionExtensions
+namespace TaxiDataETL.Core
 {
-    public static IServiceCollection AddCoreServices(this IServiceCollection services)
+    public static class IServiceCollectionExtensions
     {
-        services.AddScoped<ICsvTripReader, CsvTripReader>();
+        public static IServiceCollection AddCoreServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICsvTripReader, CsvTripReader>();
 
-        return services;
+            return services;
+        }
     }
 }
