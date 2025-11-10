@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{47473C00-2111-40AE-AB84-FD8C13E3EFBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiDataETL.CLI", "src\TaxiDataETL.CLI\TaxiDataETL.CLI.csproj", "{F2D58DF1-A7F5-4C52-B2E3-EEAF99A6A84E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiDataETL.Core", "src\TaxiDataETL.Core\TaxiDataETL.Core.csproj", "{6C755105-A338-4AB0-B2D1-83993E4229F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiDataETL.Data", "src\TaxiDataETL.Data\TaxiDataETL.Data.csproj", "{56FCE9D4-E3D7-45BD-8A6C-4C9718EA3A40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiDataETL.Tests", "src\TaxiDataETL.Tests\TaxiDataETL.Tests.csproj", "{56D0E661-9EC1-4BBF-B19B-A7F098F7E200}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2D58DF1-A7F5-4C52-B2E3-EEAF99A6A84E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2D58DF1-A7F5-4C52-B2E3-EEAF99A6A84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2D58DF1-A7F5-4C52-B2E3-EEAF99A6A84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2D58DF1-A7F5-4C52-B2E3-EEAF99A6A84E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C755105-A338-4AB0-B2D1-83993E4229F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C755105-A338-4AB0-B2D1-83993E4229F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C755105-A338-4AB0-B2D1-83993E4229F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C755105-A338-4AB0-B2D1-83993E4229F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56FCE9D4-E3D7-45BD-8A6C-4C9718EA3A40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56FCE9D4-E3D7-45BD-8A6C-4C9718EA3A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56FCE9D4-E3D7-45BD-8A6C-4C9718EA3A40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56FCE9D4-E3D7-45BD-8A6C-4C9718EA3A40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D0E661-9EC1-4BBF-B19B-A7F098F7E200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D0E661-9EC1-4BBF-B19B-A7F098F7E200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D0E661-9EC1-4BBF-B19B-A7F098F7E200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D0E661-9EC1-4BBF-B19B-A7F098F7E200}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F2D58DF1-A7F5-4C52-B2E3-EEAF99A6A84E} = {47473C00-2111-40AE-AB84-FD8C13E3EFBE}
+		{6C755105-A338-4AB0-B2D1-83993E4229F2} = {47473C00-2111-40AE-AB84-FD8C13E3EFBE}
+		{56FCE9D4-E3D7-45BD-8A6C-4C9718EA3A40} = {47473C00-2111-40AE-AB84-FD8C13E3EFBE}
+		{56D0E661-9EC1-4BBF-B19B-A7F098F7E200} = {47473C00-2111-40AE-AB84-FD8C13E3EFBE}
+	EndGlobalSection
+EndGlobal
