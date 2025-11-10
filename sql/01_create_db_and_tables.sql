@@ -1,0 +1,7 @@
+IF DB_ID(N'TaxiDb') IS NULL BEGIN CREATE DATABASE [TaxiDb];
+
+END;
+GO
+
+USE [TaxiDb];
+GO
