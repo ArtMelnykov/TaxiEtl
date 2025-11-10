@@ -13,8 +13,8 @@ public class CsvTripReader : ICsvTripReader
 
     public CsvTripReader(IConfiguration configuration)
     {
-        _csvPath = configuration["InputCsvPath"]
-                   ?? throw new InvalidOperationException("InputCsvPath is not configured");
+        _csvPath = configuration["Csv:InputPath"]
+                       ?? throw new InvalidOperationException("Csv:InputPath is not configured");
     }
 
     public async IAsyncEnumerable<TaxiTrip> ReadTripsAsync(

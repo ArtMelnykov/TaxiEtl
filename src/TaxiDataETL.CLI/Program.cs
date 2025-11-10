@@ -4,10 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-// нужно добавить:
 using TaxiDataETL.Core.Interfaces;
 
-var builder = Host.CreateApplicationBuilder(args);
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: true)
@@ -23,7 +22,7 @@ builder.Logging.AddSerilog();
 
 // DI
 builder.Services.AddCoreServices();
-builder.Services.AddDataServices(builder.Configuration);
+// builder.Services.AddDataServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -43,7 +42,7 @@ using (var scope = app.Services.CreateScope())
             $"Tip: {trip.TipAmount}, " +
             $"PU: {trip.PULocationID}, DO: {trip.DOLocationID}");
 
-        break; // только первая строка
+        break;
     }
 }
 
