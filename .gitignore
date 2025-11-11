@@ -487,3 +487,7 @@ appsettings.json
 
 # Vim temporary swap files
 *.swp
+
+# ETL input and output
+duplicates.csv
+src/TaxiDataETL.CLI/data/*.csv

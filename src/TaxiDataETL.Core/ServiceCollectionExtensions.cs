@@ -9,6 +9,8 @@ namespace TaxiDataETL.Core
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             services.AddScoped<ICsvTripReader, CsvTripReader>();
+            services.AddScoped<IDuplicatesWriter, DuplicatesCsvWriter>();
+            services.AddScoped<ITaxiEtlService, TaxiEtlService>();
 
             return services;
         }

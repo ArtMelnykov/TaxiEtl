@@ -5,38 +5,39 @@ using Microsoft.Extensions.Configuration;
 using TaxiDataETL.Core.Interfaces;
 using TaxiDataETL.Core.Models;
 
-namespace TaxiDataETL.Core.Services;
-
-public class CsvTripReader : ICsvTripReader
+namespace TaxiDataETL.Core.Services
 {
-    private readonly string _csvPath;
-
-    public CsvTripReader(IConfiguration configuration)
+    public class CsvTripReader : ICsvTripReader
     {
-        _csvPath = configuration["Csv:InputPath"]
-                       ?? throw new InvalidOperationException("Csv:InputPath is not configured");
-    }
+        private readonly string _csvPath;
 
-    public async IAsyncEnumerable<TaxiTrip> ReadTripsAsync(
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
-    {
-        if (!File.Exists(_csvPath))
-            throw new FileNotFoundException($"CSV file not found at path: {_csvPath}");
-
-        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        public CsvTripReader(IConfiguration configuration)
         {
-            HasHeaderRecord = true,
-            BadDataFound = null
-        };
+            _csvPath = configuration["Csv:InputPath"]
+                           ?? throw new InvalidOperationException("Csv:InputPath is not configured");
+        }
 
-        using var reader = new StreamReader(_csvPath);
-        using var csv = new CsvReader(reader, csvConfig);
-
-        csv.Context.RegisterClassMap<TaxiTripCsvMap>();
-
-        await foreach (var record in csv.GetRecordsAsync<TaxiTrip>(ct))
+        public async IAsyncEnumerable<TaxiTrip> ReadTripsAsync(
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct = default)
         {
-            yield return record;
+            if (!File.Exists(_csvPath))
+                throw new FileNotFoundException($"CSV file not found at path: {_csvPath}");
+
+            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                BadDataFound = null
+            };
+
+            using var reader = new StreamReader(_csvPath);
+            using var csv = new CsvReader(reader, csvConfig);
+
+            csv.Context.RegisterClassMap<TaxiTripCsvMap>();
+
+            await foreach (var record in csv.GetRecordsAsync<TaxiTrip>(ct))
+            {
+                yield return record;
+            }
         }
     }
 }

@@ -9,7 +9,11 @@ namespace TaxiDataETL.Core.Services
         {
             Map(m => m.PickupDateTime).Name("tpep_pickup_datetime");
             Map(m => m.DropoffDateTime).Name("tpep_dropoff_datetime");
-            Map(m => m.PassengerCount).Name("passenger_count");
+
+            Map(m => m.PassengerCount).Name("passenger_count")
+            .TypeConverterOption.NullValues(string.Empty, "NULL", "null")
+            .Default((byte)0);
+
             Map(m => m.TripDistance).Name("trip_distance");
             Map(m => m.StoreAndFwdFlag).Name("store_and_fwd_flag");
             Map(m => m.PULocationID).Name("PULocationID");

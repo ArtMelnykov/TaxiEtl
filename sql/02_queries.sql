@@ -1,15 +1,31 @@
-IF DB_ID(N'TaxiDb') IS NULL BEGIN CREATE DATABASE [TaxiDb];
-
-END;
-GO
-
 USE [TaxiDb];
 GO
 
+USE master;
+
+-- Count total amount of rows
+SELECT COUNT(*) AS TotalRows FROM dbo.TaxiTrips;
+
+-- Check duplicates, if not exist than output is empty
+SELECT
+    PickupDateTime,
+    DropoffDateTime,
+    PassengerCount,
+    COUNT(*) AS Cnt
+FROM dbo.TaxiTrips
+GROUP BY
+    PickupDateTime,
+    DropoffDateTime,
+    PassengerCount
+HAVING
+    COUNT(*) > 1;
+
+-- Check if TaxiTrips table is not empty, if yes than drop table
 IF OBJECT_ID('dbo.TaxiTrips', 'U') IS NOT NULL
 DROP TABLE dbo.TaxiTrips;
 GO
 
+-- Create new TaxiTrips table
 CREATE TABLE dbo.TaxiTrips (
     Id BIGINT IDENTITY(1, 1) PRIMARY KEY,
     PickupDateTime DATETIME2 NOT NULL,
@@ -22,20 +38,3 @@ CREATE TABLE dbo.TaxiTrips (
     FareAmount DECIMAL(10, 2) NOT NULL,
     TipAmount DECIMAL(10, 2) NOT NULL
 );
-GO
-
-CREATE
-INDEX IX_TaxiTrips_PULocation_Tip ON dbo.TaxiTrips (PULocationID, TipAmount);
-
-CREATE
-INDEX IX_TaxiTrips_TripDistance ON dbo.TaxiTrips (TripDistance DESC);
-
-CREATE
-INDEX IX_TaxiTrips_TravelTime ON dbo.TaxiTrips (
-    PickupDateTime,
-    DropoffDateTime
-);
-
-CREATE
-INDEX IX_TaxiTrips_PULocation_Search ON dbo.TaxiTrips (PULocationID);
-GO
