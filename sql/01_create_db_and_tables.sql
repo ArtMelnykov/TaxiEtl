@@ -1,11 +1,3 @@
-IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = N'TaxiDb')
-BEGIN
-    CREATE DATABASE TaxiDb;
-END
-
-USE TaxiDb;
-GO
-
 IF OBJECT_ID(N'dbo.TaxiTrips', N'U') IS NOT NULL
     DROP TABLE dbo.TaxiTrips;
 GO
@@ -24,14 +16,14 @@ CREATE TABLE dbo.TaxiTrips (
 );
 GO
 
-CREATE INDEX IX_TaxiTrips_PULocation_Tip ON dbo.TaxiTrips (PULocationID, TipAmount);
+CREATE INDEX IX_TaxiTrips_PULLocation_Tip ON dbo.TaxiTrips (PULocationID, TipAmount);
+GO
 
 CREATE INDEX IX_TaxiTrips_TripDistance ON dbo.TaxiTrips (TripDistance DESC);
+GO
 
-CREATE INDEX IX_TaxiTrips_TravelTime ON dbo.TaxiTrips (
-    PickupDateTime,
-    DropoffDateTime
-);
+CREATE INDEX IX_TaxiTrips_TravelTime ON dbo.TaxiTrips (PickupDateTime, DropoffDateTime);
+GO
 
-CREATE INDEX IX_TaxiTrips_PULocation_Search ON dbo.TaxiTrips (PULocationID);
+CREATE INDEX IX_TaxiTrips_PULLocation_Search ON dbo.TaxiTrips (PULocationID);
 GO
