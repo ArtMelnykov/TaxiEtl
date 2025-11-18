@@ -14,11 +14,18 @@ I used the sample CSV from the task and checked the output with the queries list
 - SQL Server (local install/Docker/Azure SQL all work)
 - Input CSV (I keep a copy under `src/TaxiDataETL.CLI/data/sample-cab-data.csv` for reference)
 
-## Getting the project ready
+## Getting the project ready (local SQL Server)
 
-1. Create database `TaxiDb` and run `sql/01_create_db_and_tables.sql`. The script builds `dbo.TaxiTrips` with the required columns.
+1. Create database `TaxiDb` on your SQL Server instance and run `sql/01_create_db_and_tables.sql`. The script builds `dbo.TaxiTrips` with the required columns.
 2. Update `ConnectionStrings:TaxiDb` in `src/TaxiDataETL.CLI/appsettings.json` or override it via `ConnectionStrings__TaxiDb`. I keep secrets outside Git; `dotnet user-secrets` or env vars are fine.
 3. Adjust CSV settings if your paths differ: `Csv:InputPath`, `Csv:DuplicatesOutputPath`, `Csv:BatchSize`, `Csv:SourceTimeZone` (needed to convert EST timestamps to UTC).
+
+## Getting the project ready (Docker Compose)
+
+1. Copy `.env.template` to `.env`, set a strong `MSSQL_SA_PASSWORD`, and keep `DB_CONNECTION_STRING=Server=db;Database=TaxiDb;User Id=sa;Password=<your_password>;TrustServerCertificate=True;Encrypt=True;`.
+2. Start both services with `docker compose up --build`. The CLI container gets the connection string and CSV path (`Csv__InputPath=/app/data/sample-cab-data.csv`) from the compose file.
+3. Once the SQL Server container is healthy, run `sql/01_create_db_and_tables.sql` against `localhost,51433` (or use any SQL client) so the `TaxiDb` schema is in place.
+4. If you want to point to another CSV or output directory, override the relevant `Csv__*` environment variables in `docker-compose.yml` before building.
 
 ## Running the ETL
 

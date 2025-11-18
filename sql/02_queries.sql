@@ -1,8 +1,6 @@
 USE [TaxiDb];
 GO
 
-USE master;
-
 -- Count total amount of rows
 SELECT COUNT(*) AS TotalRows FROM dbo.TaxiTrips;
 
