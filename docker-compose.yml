@@ -18,18 +18,60 @@ services:
     restart: always
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}   # Fixed
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
     ports:
       - "51433:1433"
     healthcheck:
-      test: ["CMD-SHELL",
-             "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" -b -C || exit 1"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" -b -C || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 12
       start_period: 40s
     volumes:
       - sqlserver_data:/var/opt/mssql
+
+  # --- Service №3: Database initializator ---     
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    volumes:
+      - ./sql:/sql
+    entrypoint: ["/opt/mssql-tools18/bin/sqlcmd",
+                  "-S", "db",
+                  "-U", "sa",
+                  "-P", "${MSSQL_SA_PASSWORD}",
+                  "-C",
+                  "-i", "/sql/01_create_db_and_tables.sql"]
+    restart: "no"
+
+  # --- Service №4: Test Assignment queries check ---    
+  db-test-sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    volumes:
+      - ./sql:/sql
+    entrypoint:
+      - /opt/mssql-tools18/bin/sqlcmd
+      - -S
+      - db
+      - -U
+      - sa
+      - -P
+      - ${MSSQL_SA_PASSWORD}
+      - -C
+      - -i
+      - /sql/03_test_assignment_queries_check.sql
+    restart: "no"
 
 volumes:
   sqlserver_data:
