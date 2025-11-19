@@ -22,10 +22,30 @@ I used the sample CSV from the task and checked the output with the queries list
 
 ## Getting the project ready (Docker Compose)
 
-1. Copy `.env.template` to `.env`, set a strong `MSSQL_SA_PASSWORD`, and keep `DB_CONNECTION_STRING=Server=db;Database=TaxiDb;User Id=sa;Password=<your_password>;TrustServerCertificate=True;Encrypt=True;`.
-2. Start both services with `docker compose up --build`. The CLI container gets the connection string and CSV path (`Csv__InputPath=/app/data/sample-cab-data.csv`) from the compose file.
-3. Once the SQL Server container is healthy, run `sql/01_create_db_and_tables.sql` against `localhost,51433` (or use any SQL client) so the `TaxiDb` schema is in place.
-4. If you want to point to another CSV or output directory, override the relevant `Csv__*` environment variables in `docker-compose.yml` before building.
+`docker-compose.yml` spins up everything for you: `db` (SQL Server), `db-init` (one-off schema creator), `taxidata-etl` (the CLI), and `db-test-sql` (optional verification queries).
+
+1. Copy `.env.template` to `.env` and populate it.
+   - `MSSQL_SA_PASSWORD` must meet SQL Server complexity rules.
+   - Keep `DB_CONNECTION_STRING=Server=db;Database=TaxiDb;User Id=sa;Password=<your_password>;TrustServerCertificate=True;Encrypt=True;`. Inside Docker, the hostname for SQL Server is `db`, so no other changes are needed.
+2. Build the CLI image (or rebuild after code changes) and start SQL Server:
+   ```bash
+   docker compose build
+   docker compose up -d db
+   ```
+3. Initialize the database by running the helper container. It waits for SQL Server to be healthy, creates `TaxiDb` if needed, and executes `sql/01_create_db_and_tables.sql`:
+   ```bash
+   docker compose run --rm db-init
+   ```
+4. Run the ETL. This command mounts `src/TaxiDataETL.CLI/data` into the container and processes `sample-cab-data.csv`:
+   ```bash
+   docker compose run --rm taxidata-etl
+   ```
+   Use `docker compose up taxidata-etl` if you prefer to keep the container attached and let Compose handle dependencies automatically.
+5. (Optional) Execute the assignment-check queries against the freshly loaded data:
+   ```bash
+   docker compose run --rm db-test-sql
+   ```
+6. To ingest another CSV or change where duplicates land, either edit the `Csv__*` variables under the `taxidata-etl` service or override them inline, e.g. `docker compose run -e Csv__InputPath=/app/data/2020.csv --rm taxidata-etl`. Adjust the bind mount if the source file lives outside `src/TaxiDataETL.CLI/data`.
 
 ## Running the ETL
 
